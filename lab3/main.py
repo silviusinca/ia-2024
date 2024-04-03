@@ -173,3 +173,34 @@ aStarSolMultiple(gr, nsol=4)
 print('----------------------------------------------------')
 aStarSolMultiple2(gr, nsol=4)
 
+
+def aStar(g):
+    OPEN = [NodArbore(gr.start)]
+    CLOSED = []
+    while OPEN:
+        nodCurent = OPEN.pop(0)
+        CLOSED.append(nodCurent)
+        if gr.scop(nodCurent.informatie):
+            print(repr(nodCurent))
+            return
+
+        lSuccesori = gr.succesori(nodCurent)
+        for s in lSuccesori:
+            gasitOpen = False
+            for nodC in OPEN:
+                if s.informatie == nodC.informatie:
+                    gasitOpen = True
+                    if s < nodC:
+                        OPEN.remove(nodC)
+                    else:
+                        lSuccesori.remove(s)
+            if not gasitOpen:
+                for nodC in CLOSED:
+                    if s.informatie == nodC.informatie:
+                        if s < nodC:
+                            CLOSED.remove(nodC)
+                        else:
+                            lSuccesori.remove(s)
+        OPEN += lSuccesori
+        OPEN.sort()
+
